@@ -100,7 +100,6 @@
     const stopwatch = () => {
       isRunning = isRunning ? stop() : start()
       !isRunning && renderLaps(laps = [...laps, time])
-      
       document.body.classList.toggle("running", isRunning)
     }
 
