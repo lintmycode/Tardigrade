@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>stop! watch</title>
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 62.5%;
+      background-color: #222;
+      color: #aaa;
+      border-color: #aaa;
+      transition: all 500ms ease-in-out;
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+      padding: 2rem;
+    }
+    
+    body.running {
+      color: #fff;
+      border-color: #fff;
+      background-color: #007878;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      height: 100%;
+      flex: 1 1 100%;
+    }
+
+    aside {
+      flex: 1 1 0;
+      border-left: 1px solid;
+    }
+
+    .time {
+      font-size: 4rem;
+    }
+    
+    .stopwatch-toggle {
+      font-size: 0;
+      background-color: transparent;
+      border: 0;
+      width: 4rem;
+      height: 4rem;
+      background-image: url(icons/play.svg);
+      background-size: contain;
+    }
+    
+    .stopwatch-toggle.pause {
+      background-image: url(icons/pause.svg);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      font-size: 1rem;
+    }
+
+    li {
+      margin: 1rem 0 1rem 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="time"></div>
+    <button onclick="stopwatch(event)" class="stopwatch-toggle">Start / Stop</button>
+  </main>
+
+  <aside>
+    <ul class="laps"></ul>
+  </aside>
+
+  <script>
+    // keeps track of time start/pause and laps
+    let time = 0
+    let isRunning = null
+    let laps = []
+    const start = () => setInterval(() => renderTime(++time), 1000) 
+    const stop = () => clearInterval(isRunning) // returns void so its cool
+    const stopwatch = () => {
+      isRunning = isRunning ? stop() : start()
+      !isRunning && updateLaps(time)
+      
+      document.querySelector(".stopwatch-toggle").classList.toggle("pause", isRunning)
+      document.body.classList.toggle("running", isRunning)     
+    }
+
+    // updates laps array
+    const updateLaps = t => {
+      laps.push(time)
+      renderLaps(laps)
+    }
+
+    // format & rendering
+    const formatTime = t => {
+      const hours = Math.floor(t / 3600).toString().padStart(2, 0)
+      const minutes = Math.floor((t % 3600) / 60).toString().padStart(2, 0)
+      const seconds = (t % 60).toString().padStart(2, 0)
+      return `${hours}:${minutes}:${seconds}`
+    }
+    
+    const renderLaps = laps => 
+      document.querySelector(".laps").innerHTML = 
+        laps.reduce((acc, cur) => acc += `<li>${formatTime(cur)}</li>`, "")
+
+    const renderTime = t => 
+      document.querySelector(".time").innerHTML = formatTime(t)
+    
+    document.addEventListener("keydown", key => key.code === "Space" && stopwatch())
+    
+    renderTime(time)
+  </script>
+
+</body>
+</html>
