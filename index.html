@@ -99,7 +99,7 @@
     const stop = () => clearInterval(isRunning) // returns void so its cool
     const stopwatch = () => {
       isRunning = isRunning ? stop() : start()
-      !isRunning && renderLaps([...laps, time])
+      !isRunning && renderLaps(laps = [...laps, time])
       
       document.querySelector(".stopwatch-toggle").classList.toggle("pause", isRunning)
       document.body.classList.toggle("running", isRunning)     
