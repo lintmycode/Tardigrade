@@ -106,10 +106,7 @@
     }
 
     // updates laps array
-    const updateLaps = t => {
-      laps.push(time)
-      renderLaps(laps)
-    }
+    const updateLaps = t => renderLaps([...laps, time])
 
     // format & rendering
     const formatTime = t => {
