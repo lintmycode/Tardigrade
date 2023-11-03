@@ -64,7 +64,7 @@
       background-size: contain;
     }
     
-    .stopwatch-toggle.pause {
+    body.running .stopwatch-toggle {
       background-image: url(icons/pause.svg);
     }
 
@@ -101,8 +101,7 @@
       isRunning = isRunning ? stop() : start()
       !isRunning && renderLaps(laps = [...laps, time])
       
-      document.body.classList.toggle("running", isRunning)     
-      document.querySelector(".stopwatch-toggle").classList.toggle("pause", isRunning)
+      document.body.classList.toggle("running", isRunning)
     }
 
     // format & rendering
