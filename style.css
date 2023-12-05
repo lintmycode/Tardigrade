@@ -1,0 +1,282 @@
+:root {
+  --c-text: #aaa;
+  --c-bg: #222;
+  --c-bg-alt: #333;
+  --c-text-active: #fff;
+  --c-bg-active: #007878;
+  --c-alert: #f15858;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 62.5%;
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  border-color: var(--c-text);
+  transition: all 500ms ease-in-out;
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+  body.running {
+    color: var(--c-text-active);
+    border-color: var(--c-text-active);
+    background-color: var(--c-bg-active);
+  }
+
+  body.running .stopwatch-toggle {
+    border: 1px solid var(--c-text-active);
+    background-color: transparent;
+  }
+
+  /* body.running button, */
+  body.running .lap-title {
+    color: var(--c-text-active);
+    /* background-color: var(--c-bg-active); */
+  }
+
+    body.running .lap-title::placeholder {
+      color: var(--c-text-active);
+    }
+
+  body.running .stopwatch-toggle {
+    color: var(--c-text-active);
+  }
+
+    body.running .stopwatch-toggle:hover {
+      color: var(--c-text);
+      background-color: var(--c-bg);
+    }
+
+.hidden {
+  display: none;
+}
+
+textarea {
+  background-color: transparent;
+  color: var(--c-text);
+}
+
+button,
+input,
+textarea {
+  /* background-color: var(--c-bg);
+  color: var(--c-text); */
+  border: 0;
+  transition: all 200ms ease-in-out;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+}
+
+button {
+  cursor: pointer;
+  padding: .3rem 1rem;
+  transition: 100ms all ease-in-out;
+}
+
+  button.primary {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+    border: 1px solid var(--c-text);
+  }
+
+    button.primary:hover,
+    button.primary:active {
+      background-color: var(--c-bg-active);
+      border: 1px solid var(--c-bg-active);
+      color: var(--c-text-active);
+    }
+
+  button.alert {
+    background-color: transparent;
+    color: var(--c-alert);
+    border: 1px solid var(--c-alert);
+  }
+
+    button.alert:hover,
+    button.alert:active {
+      background-color: var(--c-alert);
+      color: var(--c-text-active);
+    }
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 100%;
+  flex: 1 1 0;
+}
+
+input[type=text] {
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  padding: .6rem 0;
+  font-size: 2rem;
+  text-align: left;
+  outline: 0;
+  color: var(--c-text);
+}
+
+  input[type=text]:focus {
+    border-bottom: 1px solid var(--c-text);
+  } 
+
+input.lap-title {
+  text-align: center;
+} 
+
+.time {
+  font-size: 4rem;
+}
+
+.stopwatch-toggle {
+  /* font-size: 0;
+  background-color: transparent;
+  border: 0; */
+  /* width: 6rem;
+  height: 6rem; */
+  /* background-image: url(icons/play.svg);
+  background-size: contain; */
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+aside {
+  flex: 1 1 0;
+  display: flex;
+  /* border-right: 1px solid; */
+  /* background: #333; */
+}
+
+.tasks {
+  flex: 0 0 20vw;
+  background-color: var(--c-bg);
+}
+
+  .tasks li {
+    display: flex;
+  }
+   
+    .tasks li.active {
+      background: var(--c-bg-alt);
+    }
+
+  .tasks .select {
+    background-color: transparent;
+    color: var(--c-text); 
+    width: 100%;
+    border: 0;
+    padding: 1rem;
+    text-align: left;
+  }
+
+  button.new-task {
+    margin: 1rem;
+    font-size: 1rem;
+  }
+
+.laps {
+  flex: 0 0 30vw;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background: var(--c-bg-alt);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  height: 100%;
+}
+
+  .laps .top {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .laps h3 {
+    font-weight: 400;
+  }
+
+  .laps ul {
+    overflow: auto;
+    /* height: 100%; */
+  }
+
+    .laps li {
+      padding: .5rem 0;
+      display: flex;
+      gap: .8rem;
+      align-items: center;
+      justify-content: space-between;
+      background-color: transparent;
+      
+      /* transition: 50ms background-color ease-in-out; */
+    }
+
+      .laps li:hover {
+        background-color: var(--c-bg);
+        color: var(--c-text-active);
+        /* padding-left: .1rem; */
+        padding-right: .5rem;
+      }
+
+    .laps li span {
+      display: none;
+      /* display: inline-flex; */
+      font-size: .8rem;
+      gap: .8rem;
+      align-items: center;
+      justify-content: end;
+      flex: 1 1 auto;
+      white-space: nowrap;
+    }
+
+      .laps li:hover span {
+        display: inline-flex;
+      }
+
+      .laps li span button.delete {
+        font-size: 1rem;
+        align-self: flex-end;
+        padding: 0;
+        color: var(--c-alert);
+        background-color: transparent;
+      }
+
+  .laps .task-title {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+.reset {
+  display: none;
+}
+
+  .reset.active {
+    display: block;
+  }
+
+ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1rem;
+  margin: 0;
+}
+
+li {
+  width: 100%;
+}
