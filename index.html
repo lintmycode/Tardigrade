@@ -11,12 +11,14 @@
   <aside>
     <div class="tasks">
       <ul></ul>
-      <button onclick="newTask()" class="new-task primary">+ Task</button>
+      <button onclick="newTask()" class="new-task primary">+ Task [t]</button>
     </div>
     <div class="laps">
       <section class="top">
-        <h2 onclick="editTaskTitle()"></h2>
-        <input type="text" class="task-title hidden" onchange="setTaskTitle(event)">
+        <div>
+          <h2 onclick="editTaskTitle()" title="click to edit"></h2>
+          <input type="text" class="task-title hidden" placeholder="task title" onblur="setTaskTitle(event)">
+        </div>          
         <ul></ul>
         <h3 class="total hidden"></h3>
       </section>
@@ -27,9 +29,10 @@
   </aside>
 
   <main>
-    <input type="text" class="lap-title" placeholder="what are you doing?" onchange="setLapTitle(event)">
+    <input type="text" class="lap-title" placeholder="what are you doing?" onblur="setLapTitle(event)" title="click to edit">
     <div class="time"></div>
-    <button onclick="stopwatch(event)" class="stopwatch-toggle primary" data-start="Start ▶" data-pause="Pause ⏸">Start ▶️</button>
+    <button onclick="stopwatch(event)" class="stopwatch-toggle primary" data-start="Start ▶" data-pause="Pause ⏸" 
+      title="press [space] to start/pause">Start ▶️</button>
   </main>
 
   <script src="app.js"></script>

@@ -49,9 +49,10 @@ const stopwatch = () => {
 // tasks
 // new task should be made current and time reset to 0
 const newTask = () => {
-  tasks.push({ name: "task-" + tasks.length, laps: [] })
+  tasks.push({ name: "", laps: [] })
   setCurrentTask(tasks.length - 1)
   renderTime(time = 0)
+  editTaskTitle()
 }
 
 // delete a task
@@ -85,7 +86,7 @@ const editTaskTitle = e => {
 
 // edit a task title
 const setTaskTitle = e => {
-  tasks[currentTask].name = e.target.value
+  tasks[currentTask].name = e.target.value.trim().length !== 0 ? e.target.value.trim() : "new task"
   save()
   renderTasks()
 }
@@ -104,7 +105,6 @@ const deleteLap = index => {
   renderLaps()
   save()
 }
-
 
 // localstorage
 const save = () => localStorage.setItem("tasks", JSON.stringify(tasks))
@@ -145,10 +145,16 @@ const renderTasks = () => {
   dom.laps.title.label.textContent = tasks[currentTask].name
   dom.laps.title.input.classList.add("hidden")
 
+  const cutString = (str, maxLength) => str.length > maxLength ? str.slice(0, str.lastIndexOf(' ', maxLength)) + '...' : str;
+
+
   dom.tasks.list.innerHTML = 
     tasks.reduce((acc, cur, index) => acc += 
       `<li class="${index === currentTask ? "active" : ""}">
-        <button onclick="setCurrentTask(${index})" class="select">${cur.name}</button>
+        <button onclick="setCurrentTask(${index})" class="select">
+        ${cutString(cur.name, 16)}
+        
+        </button>
       </li>`, "")
 }
  
@@ -175,9 +181,24 @@ const renderTime = t =>
 // event listeners
 document.addEventListener("keydown", key => key.code === "Space" 
   && document.activeElement.tagName !== "INPUT"
-  && document.activeElement.tagName !== "BUTTON" && stopwatch())
-// document.querySelector("input[name=lap-title]").focus()
- 
+  && document.activeElement.tagName !== "BUTTON" 
+  && stopwatch())
+
+document.addEventListener("keydown", key => console.log(key))
+
+// blur all inputs task
+document.addEventListener("keydown", key => (key.code === "Escape" || key.code === "Enter")
+  && document.activeElement.tagName === "INPUT"
+  && document.activeElement.blur())
+
+// new task
+document.addEventListener("keydown", key => {
+  if (key.code === "KeyT" && document.activeElement.tagName !== "INPUT") {
+    key.preventDefault(); // This will prevent the "t" from being typed in the input
+    newTask();
+  }
+})
+
 // init
 tasks = load()
 laps = tasks[currentTask].laps

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- License: MIT. Made by joypixels: https://github.com/joypixels/emojione -->
-<svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-  aria-hidden="true" role="img" class="iconify iconify--emojione-monotone" 
-  preserveAspectRatio="xMidYMid meet">
-  <path d="M32 2C15.432 2 2 15.432 2 32c0 16.569 13.432 30 30 30s30-13.431 30-30C62 15.432 48.568 2 32 2m-4 48h-8V14h8v36m16 0h-8V14h8v36" fill="#fff"></path></svg>
