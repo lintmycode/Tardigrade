@@ -48,7 +48,9 @@ const stopwatch = () => {
 
 // tasks
 // new task should be made current and time reset to 0
+// note: no new tasks if clock is running
 const newTask = () => {
+  if (isRunning) return
   tasks.push({ name: "", laps: [] })
   setCurrentTask(tasks.length - 1)
   renderTime(time = 0)
@@ -56,7 +58,9 @@ const newTask = () => {
 }
 
 // delete a task
+// note: cant delete if clock is running
 const deleteTask = () => {
+  if (isRunning) return
   tasks.splice(currentTask, 1)
   setCurrentTask(--currentTask)
   save()
@@ -65,26 +69,23 @@ const deleteTask = () => {
 // setting a current task should 
 // a) load its laps
 // b) re-render laps and tasks
+// note: cant change tasks if clock is running
 const setCurrentTask = index => {
-  // console.log("index", index)
-  // console.log("tasks", tasks)
+  if (isRunning) return
   currentTask = index
   laps = tasks[currentTask].laps
   renderLaps()
   renderTasks()
-  
-  // document.querySelectorAll(".tasks ul button").forEach(e => e.classList.remove("active"))
-  // document.querySelector(`.tasks ul li:nth-child(${currentTask + 1})`).classList.add("active")
 }
 
-//
+// enter edition mode on task title
 const editTaskTitle = e => {
   dom.laps.title.label.classList.add("hidden")
   dom.laps.title.input.classList.remove("hidden")
   dom.laps.title.input.focus()
 }
 
-// edit a task title
+// edit a task title and leave edition
 const setTaskTitle = e => {
   tasks[currentTask].name = e.target.value.trim().length !== 0 ? e.target.value.trim() : "new task"
   save()
@@ -100,11 +101,19 @@ const setLapTitle = e => {
 
 // delete a lap, save and re-render
 const deleteLap = index => {
+  if (isRunning) return
+  
+  // if the last lap was deleted, update the timer
+  if (index === laps.length - 1) {
+    renderTime(time = laps.length > 1 ? laps[laps.length - 2].time : 0)
+  }
+
   laps.splice(index, 1)
   tasks[currentTask].laps = laps
   renderLaps()
-  save()
+  save()  
 }
+
 
 // localstorage
 const save = () => localStorage.setItem("tasks", JSON.stringify(tasks))
@@ -112,12 +121,6 @@ const load = () => [...JSON.parse(localStorage.getItem('tasks')) ||
   [{ name: "Untitled", laps: [] }]]
 
 // format & rendering
-// const formatTime = t => {
-//   const hours = Math.floor(t / 3600).toString().padStart(2, 0)
-//   const minutes = Math.floor((t % 3600) / 60).toString().padStart(2, 0)
-//   const seconds = (t % 60).toString().padStart(2, 0)
-//   return `${hours}:${minutes}:${seconds}`
-// }
 const formatTime = (t, fuzzy = false) => {
   const hours = Math.floor(t / 3600);
   const minutes = Math.floor((t % 3600) / 60);
@@ -139,6 +142,7 @@ const formatTime = (t, fuzzy = false) => {
   }
 }
 
+// render task list
 const renderTasks = () => {
   // reset task edition
   dom.laps.title.label.classList.remove("hidden")
@@ -158,6 +162,7 @@ const renderTasks = () => {
       </li>`, "")
 }
  
+// render laps list
 const renderLaps = () => {
   dom.laps.list.innerHTML = 
     laps.reduce((acc, cur, index) => acc += `<li>
@@ -175,16 +180,17 @@ const renderLaps = () => {
   dom.laps.total.textContent = laps.length > 0 ? `${formatTime(laps[laps.length - 1].time, true)} total` : ``
 }
 
+// render clock
 const renderTime = t => 
   dom.time.innerHTML = formatTime(t)
  
 // event listeners
+// document.addEventListener("keydown", key => console.log(key))
+// space toggles stopwatch
 document.addEventListener("keydown", key => key.code === "Space" 
   && document.activeElement.tagName !== "INPUT"
   && document.activeElement.tagName !== "BUTTON" 
   && stopwatch())
-
-document.addEventListener("keydown", key => console.log(key))
 
 // blur all inputs task
 document.addEventListener("keydown", key => (key.code === "Escape" || key.code === "Enter")
