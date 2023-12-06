@@ -9,23 +9,32 @@
 <body>
 
   <aside>
-    <div class="tasks">
-      <ul></ul>
-      <button onclick="newTask()" class="new-task primary">+ Task [t]</button>
-    </div>
-    <div class="laps">
-      <section class="top">
+    <section class="tasks">
+      <main>
+        <ul></ul>
+        <button onclick="newTask()" class="new-task primary">+ Task [t]</button>
+      </main>
+
+      <footer>
+        <ul>
+          <li class="version"></li>
+          <li><a href="https://github.com/lintmycode/stopwatch" target="_blank"><img src="icons/github.svg" alt="github"></a></li>
+        </ul>
+      </div>
+    </section>
+    <section class="laps">
+      <main>
         <div>
           <h2 onclick="editTaskTitle()" title="click to edit"></h2>
           <input type="text" class="task-title hidden" placeholder="task title" onblur="setTaskTitle(event)">
         </div>          
         <ul></ul>
         <h3 class="total hidden"></h3>
-      </section>
-      <section class="footer">
+      </main>
+      <footer>
         <button onclick="deleteTask()" class="delete alert">delete task</button>
-      </section>
-    </div>
+      </footer>
+    </section>
   </aside>
 
   <main>
@@ -36,5 +45,6 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="version.js"></script>
 </body>
 </html>
