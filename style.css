@@ -130,6 +130,12 @@ button {
       color: var(--c-text-active);
     }
 
+  button:disabled {
+    opacity: .5;
+    cursor: default;
+    pointer-events: none;
+  }
+
 body > main {
   display: flex;
   flex-direction: column;

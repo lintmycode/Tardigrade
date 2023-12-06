@@ -9,6 +9,8 @@ const dom = {
   time: document.querySelector(".time"),
   tasks: {
     list: document.querySelector(".tasks ul"),
+    new: document.querySelector(".tasks .new-task"),
+    delete: document.querySelector(".laps .delete"),
   },
   laps : {
     title: {
@@ -16,9 +18,6 @@ const dom = {
       input: document.querySelector(".laps .task-title"),
     },
     list: document.querySelector(".laps ul"),
-    task: {
-      delete: document.querySelector(".laps .delete"),
-    },
     total: document.querySelector(".laps .total"),
   },
   stopwatch: {
@@ -30,12 +29,14 @@ const start = () => setInterval(() => renderTime(++time), 1000)
 const stop = () => clearInterval(isRunning) // returns void so its cool
 
 // toggle start/stop states
+// a) invert isRunning
+// b) change button content
+// c) disable edit controls
 const stopwatch = () => {
   isRunning = isRunning ? stop() : start()
   document.body.classList.toggle("running", isRunning)
-  // !isRunning && renderLaps(laps = [...laps, time])
-  // console.log(dom.stopwatch.toggle.dataset)
   dom.stopwatch.toggle.textContent = isRunning ? dom.stopwatch.toggle.dataset.pause : dom.stopwatch.toggle.dataset.start
+  disableEvents(isRunning)
 
   // when stopped, save new lap and re-render
   if (!isRunning) {
@@ -48,7 +49,6 @@ const stopwatch = () => {
 
 // tasks
 // new task should be made current and time reset to 0
-// note: no new tasks if clock is running
 const newTask = () => {
   if (isRunning) return
   tasks.push({ name: "", laps: [] })
@@ -69,7 +69,6 @@ const deleteTask = () => {
 // setting a current task should 
 // a) load its laps
 // b) re-render laps and tasks
-// note: cant change tasks if clock is running
 const setCurrentTask = index => {
   if (isRunning) return
   currentTask = index
@@ -142,6 +141,21 @@ const formatTime = (t, fuzzy = false) => {
   }
 }
 
+// disable actions while clock is running
+const disableEvents = (disable) => {
+  if (disable) {
+    dom.tasks.list.querySelectorAll("li button").forEach(e => e.setAttribute("disabled", "disabled"))
+    dom.laps.list.querySelectorAll("li button").forEach(e => e.setAttribute("disabled", "disabled"))
+    dom.tasks.new.setAttribute("disabled", "disabled")
+    dom.tasks.delete.setAttribute("disabled", "disabled")
+  } else {
+    dom.tasks.list.querySelectorAll("li button").forEach(e => e.removeAttribute("disabled"))
+    dom.laps.list.querySelectorAll("li button").forEach(e => e.removeAttribute("disabled"))
+    dom.tasks.new.removeAttribute("disabled")
+    dom.tasks.delete.removeAttribute("disabled")
+  }
+}
+
 // render task list
 const renderTasks = () => {
   // reset task edition
@@ -175,7 +189,7 @@ const renderLaps = () => {
     
   dom.laps.title.label.textContent = tasks[currentTask].name
   dom.laps.title.input.value = tasks[currentTask].name
-  dom.laps.task.delete.classList.toggle("hidden", currentTask === 0)
+  dom.tasks.delete.classList.toggle("hidden", currentTask === 0)
   dom.laps.total.classList.toggle("hidden", laps.length === 0)
   dom.laps.total.textContent = laps.length > 0 ? `${formatTime(laps[laps.length - 1].time, true)} total` : ``
 }
