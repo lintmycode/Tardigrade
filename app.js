@@ -40,7 +40,7 @@ const stopwatch = () => {
 
   // when stopped, save new lap and re-render
   if (!isRunning) {
-    laps = [...laps, {time: time, title: lapTitle}]
+    laps = [{time: time, title: lapTitle}, ...laps]
     tasks[currentTask].laps = laps
     save()
     renderLaps()
@@ -51,8 +51,8 @@ const stopwatch = () => {
 // new task should be made current and time reset to 0
 const newTask = () => {
   if (isRunning) return
-  tasks.push({ name: "", laps: [] })
-  setCurrentTask(tasks.length - 1)
+  tasks.unshift({ name: "", laps: [] })
+  setCurrentTask(0)
   renderTime(time = 0)
   editTaskTitle()
 }
@@ -102,17 +102,17 @@ const setLapTitle = e => {
 const deleteLap = index => {
   if (isRunning) return
   
-  // if the last lap was deleted, update the timer
-  if (index === laps.length - 1) {
-    renderTime(time = laps.length > 1 ? laps[laps.length - 2].time : 0)
-  }
-
+  
   laps.splice(index, 1)
   tasks[currentTask].laps = laps
   renderLaps()
   save()  
-}
 
+  // if the last lap was deleted, update the timer
+  if (index === 0) {
+    renderTime(time = laps.length > 0 ? laps[0].time : 0)
+  }
+}
 
 // localstorage
 const save = () => localStorage.setItem("tasks", JSON.stringify(tasks))
@@ -163,16 +163,11 @@ const renderTasks = () => {
   dom.laps.title.label.textContent = tasks[currentTask].name
   dom.laps.title.input.classList.add("hidden")
 
-  const cutString = (str, maxLength) => str.length > maxLength ? str.slice(0, str.lastIndexOf(' ', maxLength)) + '...' : str;
-
-
+  const cutString = (str, maxLength) => str.length > maxLength ? str.slice(0, str.lastIndexOf(' ', maxLength)) + '...' : str
   dom.tasks.list.innerHTML = 
     tasks.reduce((acc, cur, index) => acc += 
       `<li class="${index === currentTask ? "active" : ""}">
-        <button onclick="setCurrentTask(${index})" class="select">
-        ${cutString(cur.name, 16)}
-        
-        </button>
+        <button onclick="setCurrentTask(${index})" class="select">${cutString(cur.name, 16)}</button>
       </li>`, "")
 }
  
@@ -182,7 +177,7 @@ const renderLaps = () => {
     laps.reduce((acc, cur, index) => acc += `<li>
       ${formatTime(cur.time)} ${cur.title} 
       <span>
-        ${index > 0 ? "+" + formatTime(cur.time - laps[index - 1].time, true) : "" }
+        ${index < laps.length - 1? "+" + formatTime(cur.time - laps[index + 1].time, true) : "" }
         <button class="delete" onclick="deleteLap(${index})">x</button>
       </span>
     </li>`, "")
@@ -191,7 +186,7 @@ const renderLaps = () => {
   dom.laps.title.input.value = tasks[currentTask].name
   dom.tasks.delete.classList.toggle("hidden", currentTask === 0)
   dom.laps.total.classList.toggle("hidden", laps.length === 0)
-  dom.laps.total.textContent = laps.length > 0 ? `${formatTime(laps[laps.length - 1].time, true)} total` : ``
+  dom.laps.total.textContent = laps.length > 0 ? `${formatTime(laps[0].time, true)} total` : ``
 }
 
 // render clock
@@ -214,8 +209,16 @@ document.addEventListener("keydown", key => (key.code === "Escape" || key.code =
 // new task
 document.addEventListener("keydown", key => {
   if (key.code === "KeyT" && document.activeElement.tagName !== "INPUT") {
-    key.preventDefault(); // This will prevent the "t" from being typed in the input
-    newTask();
+    key.preventDefault()
+    newTask()
+  }
+})
+
+// rename task
+document.addEventListener("keydown", key => {
+  if (key.code === "KeyE" && document.activeElement.tagName !== "INPUT") {
+    key.preventDefault()
+    editTaskTitle()
   }
 })
 
@@ -226,5 +229,4 @@ renderTasks()
 renderLaps()
 
 //get time from last lap if lap exists
-time = laps.length ? laps[laps.length - 1].time : 0
-renderTime(time)
+renderTime(time = laps.length > 0 ? laps[0].time : 0)
