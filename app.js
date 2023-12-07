@@ -253,3 +253,6 @@ setCurrentTask(0)
 
 //get time from last lap if lap exists
 renderTime(time = laps.length > 0 ? laps[0].time : 0)
+
+// toggle button label
+dom.stopwatch.toggle.textContent = dom.stopwatch.toggle.dataset.start
