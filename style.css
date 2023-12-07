@@ -29,6 +29,12 @@ body {
   width: 100%;
 }
 
+  @media (max-width: 900px) {
+    body {
+      flex-direction: column-reverse;
+    }
+  }
+
   body.running {
     color: var(--c-text-active);
     border-color: var(--c-text-active);
@@ -162,6 +168,13 @@ body > main {
   flex: 1 1 0;
 }
 
+  @media (max-width: 900px) {
+    body > main {
+      flex: 0 0 20vh;
+      min-height: 12rem;
+    }
+  }
+
 h1 {
   /* padding: .6rem 0; */
   font-size: 1.8rem;
@@ -217,6 +230,12 @@ aside {
   justify-content: space-between;
   gap: 2rem;
 }
+
+  @media (max-width: 900px) {
+    .tasks {
+      flex-basis: 50%;
+    }
+  }
 
   .tasks main {
     overflow: hidden;
@@ -277,6 +296,13 @@ aside {
   gap: 2rem;
   height: 100%;
 }
+
+  @media (max-width: 900px) {
+    .laps {
+      flex-basis: 50%;
+      padding: 1rem;
+    }
+  }
 
   .laps main {
     overflow: hidden;
