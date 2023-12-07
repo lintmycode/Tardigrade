@@ -8,14 +8,18 @@ let isRunning = null
 const dom = {
   time: document.querySelector(".time"),
   tasks: {
+    title: {
+      label: document.querySelector(".laps h2"),
+      input: document.querySelector(".laps .task-title"),
+    },
     list: document.querySelector(".tasks ul"),
     new: document.querySelector(".tasks .new-task"),
     delete: document.querySelector(".laps .delete"),
   },
   laps : {
     title: {
-      label: document.querySelector(".laps h2"),
-      input: document.querySelector(".laps .task-title"),
+      label: document.querySelector(".main h1"),
+      input: document.querySelector(".main .lap-title"),
     },
     list: document.querySelector(".laps ul"),
     total: document.querySelector(".laps .total"),
@@ -73,15 +77,21 @@ const setCurrentTask = index => {
   if (isRunning) return
   currentTask = index
   laps = tasks[currentTask].laps
+  
+  dom.tasks.title.label.textContent = tasks[currentTask].name
+  dom.tasks.title.input.value = tasks[currentTask].name
+  dom.laps.title.label.textContent = "what are you doing?"
+  dom.laps.title.input.value = ""
+
   renderLaps()
   renderTasks()
 }
 
 // enter edition mode on task title
 const editTaskTitle = e => {
-  dom.laps.title.label.classList.add("hidden")
-  dom.laps.title.input.classList.remove("hidden")
-  dom.laps.title.input.focus()
+  dom.tasks.title.label.classList.add("hidden")
+  dom.tasks.title.input.classList.remove("hidden")
+  dom.tasks.title.input.focus()
 }
 
 // edit a task title and leave edition
@@ -89,20 +99,34 @@ const setTaskTitle = e => {
   tasks[currentTask].name = e.target.value.trim().length !== 0 ? e.target.value.trim() : "new task"
   save()
   renderTasks()
+
+  // reset task edition
+  dom.tasks.title.label.classList.remove("hidden")
+  dom.tasks.title.label.textContent = tasks[currentTask].name
+  dom.tasks.title.input.classList.add("hidden") 
 }
 
 // laps
+// enter edition mode on lap title
+const editLapTitle = e => {
+  dom.laps.title.label.classList.add("hidden")
+  dom.laps.title.input.classList.remove("hidden")
+  dom.laps.title.input.focus()
+}
+
 // set current lap title
 const setLapTitle = e => {
-  lapTitle = "- " + e.target.value
-  e.target.blur()
+  lapTitle = e.target.value
+
+  // reset lap edition
+  dom.laps.title.label.classList.remove("hidden")
+  dom.laps.title.label.textContent = lapTitle // tasks[currentTask].name
+  dom.laps.title.input.classList.add("hidden")
 } 
 
 // delete a lap, save and re-render
 const deleteLap = index => {
-  if (isRunning) return
-  
-  
+  if (isRunning) return  
   laps.splice(index, 1)
   tasks[currentTask].laps = laps
   renderLaps()
@@ -158,11 +182,6 @@ const disableEvents = (disable) => {
 
 // render task list
 const renderTasks = () => {
-  // reset task edition
-  dom.laps.title.label.classList.remove("hidden")
-  dom.laps.title.label.textContent = tasks[currentTask].name
-  dom.laps.title.input.classList.add("hidden")
-
   const cutString = (str, maxLength) => str.length > maxLength ? str.slice(0, str.lastIndexOf(' ', maxLength)) + '...' : str
   dom.tasks.list.innerHTML = 
     tasks.reduce((acc, cur, index) => acc += 
@@ -175,23 +194,20 @@ const renderTasks = () => {
 const renderLaps = () => {
   dom.laps.list.innerHTML = 
     laps.reduce((acc, cur, index) => acc += `<li>
-      ${formatTime(cur.time)} ${cur.title} 
+      ${formatTime(cur.time)} - ${cur.title}
       <span>
         ${index < laps.length - 1? "+" + formatTime(cur.time - laps[index + 1].time, true) : "" }
         <button class="delete" onclick="deleteLap(${index})">x</button>
       </span>
     </li>`, "")
-    
-  dom.laps.title.label.textContent = tasks[currentTask].name
-  dom.laps.title.input.value = tasks[currentTask].name
+
   dom.tasks.delete.classList.toggle("hidden", currentTask === 0)
   dom.laps.total.classList.toggle("hidden", laps.length === 0)
   dom.laps.total.textContent = laps.length > 0 ? `${formatTime(laps[0].time, true)} total` : ``
 }
 
 // render clock
-const renderTime = t => 
-  dom.time.innerHTML = formatTime(t)
+const renderTime = t => dom.time.innerHTML = formatTime(t)
  
 // event listeners
 // document.addEventListener("keydown", key => console.log(key))
@@ -222,11 +238,18 @@ document.addEventListener("keydown", key => {
   }
 })
 
+// rename lap
+document.addEventListener("keydown", key => {
+  if (key.code === "KeyQ" && document.activeElement.tagName !== "INPUT") {
+    key.preventDefault()
+    editLapTitle()
+  }
+})
+
 // init
 tasks = load()
 laps = tasks[currentTask].laps
-renderTasks()
-renderLaps()
+setCurrentTask(0)
 
 //get time from last lap if lap exists
 renderTime(time = laps.length > 0 ? laps[0].time : 0)
