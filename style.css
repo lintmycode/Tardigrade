@@ -41,14 +41,8 @@ body {
     background-color: var(--c-bg-active);
   }
 
-  body.running .stopwatch-toggle {
-    border: 1px solid var(--c-text-active);
-    background-color: transparent;
-  }
-
   body.running h1:after {
-    content: "";
-    background-image: url(icons/edit-alt.svg);
+    background-color: var(--c-text-active);
   }
 
   body.running .lap-title {
@@ -59,6 +53,11 @@ body {
       color: var(--c-text-active);
     }
 
+body.running .stopwatch-toggle {
+  border: 1px solid var(--c-text-active);
+  background-color: transparent;
+}
+
   body.running .stopwatch-toggle {
     color: var(--c-text-active);
   }
@@ -66,6 +65,12 @@ body {
     body.running .stopwatch-toggle:hover {
       color: var(--c-text);
       background-color: var(--c-bg);
+    }
+
+    body.running .stopwatch-toggle:after { 
+      background-color: var(--c-text-active);
+      mask: url(icons/pause.svg) no-repeat center / contain;
+      -webkit-mask: url(icons/pause.svg) no-repeat center / contain;
     }
 
 ul {
@@ -170,7 +175,7 @@ body > main {
 
   @media (max-width: 900px) {
     body > main {
-      flex: 0 0 20vh;
+      flex: 0 0 30vh;
       min-height: 12rem;
     }
   }
@@ -189,12 +194,13 @@ h1 {
 
   h1:after {
     content: "";
-    background-image: url(icons/edit.svg);
-    background-size: contain;
     width: 1rem;
     height: 1rem;
     flex: 0 0 1rem;
     transition: all 500ms ease-in-out;
+    background-color: var(--c-text);
+    mask: url(icons/edit.svg) no-repeat center / contain;
+      -webkit-mask: url(icons/edit.svg) no-repeat center / contain;
   }
 
   h1.hidden {
@@ -210,12 +216,25 @@ input.lap-title {
   font-size: 4rem;
 }
 
-button.stopwatch-toggle {
+.stopwatch-toggle {
   cursor: pointer;
   text-transform: uppercase;
-  font-size: 1rem;
+  font-size: 1.2rem;
   background-color: transparent;
+  position: relative;
+  display: flex;
+  gap: .8rem;
+  align-items: center;
 }
+
+  .stopwatch-toggle:after { 
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--c-text);
+    mask: url(icons/play.svg) no-repeat center / contain;
+    -webkit-mask: url(icons/play.svg) no-repeat center / contain;
+  }
 
 aside {
   flex: 1 1 0;
@@ -275,15 +294,27 @@ aside {
     color: var(--c-text); 
     width: 100%;
     border: 0;
-    padding: 1rem;
+    padding: 1rem 2rem;
     text-align: left;
   }
 
+    @media (max-width: 1200px) {
+      .tasks .select {
+        padding: 1rem;
+      }
+    }
+
   button.new-task {
-    margin: 1rem;
+    margin: 1rem 2rem;
     font-size: 1rem;
     align-self: flex-start;
   }
+
+    @media (max-width: 1200px) {
+      button.new-task {
+        margin: 1rem;
+      }
+    }
 
 .laps {
   flex: 0 0 30vw;
@@ -297,10 +328,15 @@ aside {
   height: 100%;
 }
 
+  @media (max-width: 1200px) {
+    .laps {
+      padding: 1rem;
+    }
+  }
+
   @media (max-width: 900px) {
     .laps {
       flex-basis: 50%;
-      padding: 1rem;
     }
   }
 
@@ -314,6 +350,7 @@ aside {
     font-weight: 400;
     margin: 0 0 1rem;
     display: flex;
+    font-size: 1.8rem;
     gap: 1rem;
     justify-content: space-between;
     align-items: baseline;
@@ -377,7 +414,11 @@ aside {
         align-self: flex-end;
         padding: 0;
         color: var(--c-alert);
-        background-color: transparent;
+        width: 1rem;
+        height: 1rem;
+        background-color: var(--c-alert);
+        mask: url(icons/delete.svg) no-repeat center / contain;
+        -webkit-mask: url(icons/delete.svg) no-repeat center / contain;
       }
 
   .laps input.task-title {
@@ -385,3 +426,22 @@ aside {
     margin-bottom: 1rem;
     padding-top: 0;
   }
+
+  .laps .delete-task {
+    display: flex;
+    gap: .8rem;
+    align-items: center;
+  }
+
+    .laps .delete-task:after {
+      content: "";
+      width: 1rem;
+      height: 1rem;
+      background-color: var(--c-alert);
+      mask: url(icons/delete.svg) no-repeat center / contain;
+      -webkit-mask: url(icons/delete.svg) no-repeat center / contain;
+    }
+
+      .laps .delete-task:hover:after {
+        background-color: var(--c-text-active);
+      }

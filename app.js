@@ -1,9 +1,9 @@
-let time = 0
+// let time = 0
 let laps = []
 let lapTitle = ""
 let tasks = []
 let currentTask = 0
-let isRunning = null
+// let isRunning = null
 
 const dom = {
   time: document.querySelector(".time"),
@@ -29,8 +29,27 @@ const dom = {
   }
 }
 
-const start = () => setInterval(() => renderTime(++time), 1000) 
-const stop = () => clearInterval(isRunning) // returns void so its cool
+let startTime;
+let intervalId;
+let isRunning = false;
+let time = 0;
+// let elapsedBeforePause = 0
+
+// const start = () => setInterval(() => renderTime(++time), 1000) 
+// const stop = () => clearInterval(isRunning) // returns void so its cool
+const start = () => {
+  startTime = new Date() -  time * 1000 // Record the start time
+  return setInterval(() => {
+    const currentTime = new Date() 
+    time = Math.floor((currentTime - startTime) / 1000);  // Update 'time' based on elapsed time
+    renderTime(time);
+  }, 1000);
+}
+
+const stop = () => {
+  return clearInterval(isRunning) 
+  // elapsedBeforePause = time; 
+}
 
 // toggle start/stop states
 // a) invert isRunning
@@ -194,10 +213,10 @@ const renderTasks = () => {
 const renderLaps = () => {
   dom.laps.list.innerHTML = 
     laps.reduce((acc, cur, index) => acc += `<li>
-      ${formatTime(cur.time)} - ${cur.title}
+      ${formatTime(cur.time)} ${cur.title.trim().length ? '- ' + cur.title : ''}
       <span>
         ${index < laps.length - 1? "+" + formatTime(cur.time - laps[index + 1].time, true) : "" }
-        <button class="delete" onclick="deleteLap(${index})">x</button>
+        <button class="delete" onclick="deleteLap(${index})"></button>
       </span>
     </li>`, "")
 
