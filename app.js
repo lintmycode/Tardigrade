@@ -157,6 +157,10 @@ const deleteLap = index => {
   }
 }
 
+// lap detail
+const showLapDetail = e => 
+  e.currentTarget.classList.toggle("active")
+
 // localstorage
 const save = () => localStorage.setItem("tasks", JSON.stringify(tasks))
 const load = () => [...JSON.parse(localStorage.getItem('tasks')) || 
@@ -212,11 +216,11 @@ const renderTasks = () => {
 // render laps list
 const renderLaps = () => {
   dom.laps.list.innerHTML = 
-    laps.reduce((acc, cur, index) => acc += `<li>
+    laps.reduce((acc, cur, index) => acc += `<li onclick="showLapDetail(event)">
       ${formatTime(cur.time)} ${cur.title.trim().length ? '- ' + cur.title : ''}
       <span>
         ${index < laps.length - 1? "+" + formatTime(cur.time - laps[index + 1].time, true) : "" }
-        <button class="delete" onclick="deleteLap(${index})"></button>
+        <button class="delete" onclick="deleteLap(${index})" title="Delete"></button>
       </span>
     </li>`, "")
 
