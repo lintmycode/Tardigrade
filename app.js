@@ -287,7 +287,7 @@ renderTime(time = loadTime())
 dom.stopwatch.toggle.textContent = dom.stopwatch.toggle.dataset.start
 
 // load help content
-fetch('/README.md')
+fetch('https://raw.githack.com/lintmycode/stopwatch/main/README.md')
   .then(response => response.text())
   .then(text => dom.help.content.textContent = text);
   
