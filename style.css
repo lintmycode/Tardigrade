@@ -5,6 +5,11 @@
   --c-text-active: #fff;
   --c-bg-active: #007878;
   --c-alert: #f15858;
+
+  /* --c-blue: #1E90FF;
+  --c-green: #32CD32;
+  --c-orange: #FFA500;
+  --c-purple: #ff10ff; */
 }
 
 *, *::before, *::after {
@@ -264,6 +269,9 @@ aside {
 
   .tasks footer {
     padding: 0 1rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
     .tasks footer ul {
@@ -272,10 +280,32 @@ aside {
       gap: 1rem;
     }
 
-    .tasks footer img {
-      width: 1.6rem;
-      height: 1.6rem;
+    .tasks footer a {
+      line-height: 0;
     }
+
+    .tasks footer img {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+
+    .tasks footer .help {
+      border: 1px solid var(--c-text);
+      width: 1.8rem;
+      height: 1.8rem;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      transition: 100ms all ease-in-out;
+    }
+
+      .tasks footer .help:hover {
+        border-color: var(--c-text-active);
+        background-color: var(--c-text-active);
+        color: var(--c-bg);
+      }
 
   .tasks ul {
     overflow: auto;
@@ -387,6 +417,7 @@ aside {
       align-items: center;
       justify-content: space-between;
       background-color: transparent;
+      cursor: pointer;
     }
 
       .laps li:hover {
@@ -405,7 +436,7 @@ aside {
       white-space: nowrap;
     }
 
-      .laps li:hover span {
+      .laps li.active span {
         display: inline-flex;
       }
 
@@ -433,6 +464,10 @@ aside {
     align-items: center;
   }
 
+  .laps .delete-task.hidden {
+    display: none;
+  }
+
     .laps .delete-task:after {
       content: "";
       width: 1rem;
@@ -445,3 +480,53 @@ aside {
       .laps .delete-task:hover:after {
         background-color: var(--c-text-active);
       }
+
+/* help dialog */
+dialog {
+  opacity: 0;
+  transition: all 100ms ease-out;
+  font-size: 1rem;
+  padding: 1rem;
+  border: 0;
+  background-color: var(--c-text-active);
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  z-index: -1;
+}
+
+  @media (max-width: 900px) {
+    dialog {
+      width: 90vw;
+    }
+  }
+
+dialog[open] {
+  opacity: 1;
+  z-index: 1;
+}
+
+dialog[open]::backdrop {
+  background-image: linear-gradient(
+    45deg,
+    #000, #000,
+    #007878
+  );
+  transition: all 100ms ease-in-out;
+  opacity: 0.5;
+}
+
+dialog pre {
+  font-family: Courier, monospace;
+  color: var(--c-bg);
+  white-space: break-spaces;
+  width: 100%;
+}
+
+dialog button.primary {
+  color: var(--c-bg);
+  background-color: var(--c-text-active);
+  margin-top: 1rem;
+}
+

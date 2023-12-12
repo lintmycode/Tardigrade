@@ -1,10 +1,3 @@
-// let time = 0
-let laps = []
-let lapTitle = ""
-let tasks = []
-let currentTask = 0
-// let isRunning = null
-
 const dom = {
   time: document.querySelector(".time"),
   tasks: {
@@ -26,30 +19,29 @@ const dom = {
   },
   stopwatch: {
     toggle: document.querySelector(".stopwatch-toggle"),
-  }
+  },
+  help: {
+    dialog: document.querySelector("dialog"),
+    content: document.querySelector("dialog pre"),
+    close: document.querySelector("dialog button"),
+  },
 }
 
-let startTime;
-let intervalId;
-let isRunning = false;
-let time = 0;
-// let elapsedBeforePause = 0
+let time = 0
+let laps = []
+let lapTitle = ""
+let tasks = []
+let currentTask = 0
+let isRunning = null
+let startTime
+let intervalId
 
-// const start = () => setInterval(() => renderTime(++time), 1000) 
-// const stop = () => clearInterval(isRunning) // returns void so its cool
 const start = () => {
-  startTime = new Date() -  time * 1000 // Record the start time
-  return setInterval(() => {
-    const currentTime = new Date() 
-    time = Math.floor((currentTime - startTime) / 1000);  // Update 'time' based on elapsed time
-    renderTime(time);
-  }, 1000);
+  startTime = new Date() -  time * 1000
+  return setInterval(() => renderTime(time = Math.floor((new Date() - startTime) / 1000)), 1000)
 }
 
-const stop = () => {
-  return clearInterval(isRunning) 
-  // elapsedBeforePause = time; 
-}
+const stop = () => clearInterval(isRunning)
 
 // toggle start/stop states
 // a) invert isRunning
@@ -138,9 +130,9 @@ const setLapTitle = e => {
   lapTitle = e.target.value
 
   // reset lap edition
-  dom.laps.title.label.classList.remove("hidden")
-  dom.laps.title.label.textContent = lapTitle // tasks[currentTask].name
   dom.laps.title.input.classList.add("hidden")
+  dom.laps.title.label.classList.remove("hidden")
+  dom.laps.title.label.textContent = lapTitle 
 } 
 
 // delete a lap, save and re-render
@@ -247,7 +239,7 @@ document.addEventListener("keydown", key => (key.code === "Escape" || key.code =
 
 // new task
 document.addEventListener("keydown", key => {
-  if (key.code === "KeyT" && document.activeElement.tagName !== "INPUT") {
+  if (key.key === "+" && document.activeElement.tagName !== "INPUT") {
     key.preventDefault()
     newTask()
   }
@@ -255,7 +247,7 @@ document.addEventListener("keydown", key => {
 
 // rename task
 document.addEventListener("keydown", key => {
-  if (key.code === "KeyE" && document.activeElement.tagName !== "INPUT") {
+  if (key.code === "KeyT" && document.activeElement.tagName !== "INPUT") {
     key.preventDefault()
     editTaskTitle()
   }
@@ -263,11 +255,19 @@ document.addEventListener("keydown", key => {
 
 // rename lap
 document.addEventListener("keydown", key => {
-  if (key.code === "KeyQ" && document.activeElement.tagName !== "INPUT") {
+  if (key.code === "KeyL" && document.activeElement.tagName !== "INPUT") {
     key.preventDefault()
     editLapTitle()
   }
 })
+
+// help
+const helpDialog = () => {
+  dom.help.dialog.showModal()
+}
+document.querySelector(".help").addEventListener("click", () => document.querySelector("dialog").showModal())
+dom.help.close.addEventListener("click", () => document.querySelector("dialog").close())
+
 
 // init
 tasks = load()
@@ -279,3 +279,9 @@ renderTime(time = laps.length > 0 ? laps[0].time : 0)
 
 // toggle button label
 dom.stopwatch.toggle.textContent = dom.stopwatch.toggle.dataset.start
+
+// load help content
+fetch('/help.md')
+  .then(response => response.text())
+  .then(text => dom.help.content.textContent = text);
+  

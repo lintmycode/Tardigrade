@@ -12,16 +12,21 @@
     <section class="tasks">
       <main>
         <ul></ul>
-        <button onclick="newTask()" class="new-task primary">+ Task</button>
+        <button onclick="newTask()" class="new-task primary" title="new task [+]">+ Task</button>
       </main>
 
       <footer>
         <ul>
           <li class="version"></li>
+        </ul>
+        <ul>
           <li>
             <a href="https://github.com/lintmycode/stopwatch" target="_blank">
               <img src="icons/github.svg" alt="github">
             </a>
+          </li>
+          <li>
+            <button class="secondary help" onclick="helpDialog()" title="help">?</button>
           </li>
         </ul>
       </div>
@@ -29,7 +34,7 @@
     <section class="laps">
       <main>
         <div>
-          <h2 onclick="editTaskTitle()" title="click to edit"></h2>
+          <h2 onclick="editTaskTitle()" title="click to edit [t]"></h2>
           <input type="text" class="task-title hidden" placeholder="task title" onblur="setTaskTitle(event)">
         </div>          
         <ul></ul>
@@ -42,13 +47,18 @@
   </aside>
 
   <main class="main">
-    <h1 onclick="editLapTitle()" title="click to edit [q]" title="click to rename [e]">what are you doing?</h1>
+    <h1 onclick="editLapTitle()" title="click to edit [l]">what are you doing?</h1>
     <input type="text" class="lap-title hidden" onblur="setLapTitle(event)">
     <div class="time"></div>
     <button onclick="stopwatch(event)" class="stopwatch-toggle primary" 
       data-start="Start" data-pause="Pause" 
       title="press [space] to start/pause"></button>
   </main>
+
+  <dialog>
+    <pre></pre>
+    <button class="primary">Close</button>
+  </dialog>
 
   <script src="app.js"></script>
   <script src="version.js"></script>
