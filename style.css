@@ -55,9 +55,9 @@ body {
       color: var(--c-text-active);
     }
 
-body.running .stopwatch-toggle {
+body.running button.stopwatch-toggle.primary {
   border: 1px solid var(--c-text-active);
-  background-color: transparent;
+  background-color: var(--c-bg-active);
 }
 
   body.running .stopwatch-toggle {

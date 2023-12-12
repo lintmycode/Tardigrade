@@ -1,6 +1,7 @@
 # Tardigrade
 A simple stopwatch with task support.
 Tasks group a series of laps and can be resumed when selected.
+It is mobile-friendly but meant to be used while working in a desktop.
 
 ## Laps
 Clicking on a lap opens lap time and lap actions.
