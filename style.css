@@ -98,6 +98,9 @@ textarea {
 button,
 input,
 textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
   border: 0;
   transition: all 200ms ease-in-out;
   font-family: 'Courier New', Courier, monospace;
@@ -252,6 +255,12 @@ input.lap-title {
   font-size: 4rem;
 }
 
+  @media (max-width: 500px) {
+    .time {
+      font-size: 2rem;
+    }
+  }
+
 .stopwatch-toggle.primary {
   cursor: pointer;
   text-transform: uppercase;
@@ -293,8 +302,6 @@ aside {
   @media (max-width: 500px) {
     aside {
       flex-direction: column-reverse;
-      /* overflow: hidden;
-      flex: 0 0 70vh; */
     }
   }
 
@@ -453,6 +460,19 @@ aside {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    gap: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .laps main {
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .laps main {
+      gap: 0;
+    }
   }
 
   .laps h2 {
@@ -464,6 +484,7 @@ aside {
     justify-content: space-between;
     align-items: baseline;
     cursor: pointer;
+    margin: 0;
   }
 
     @media (max-width: 900px) {
@@ -494,6 +515,7 @@ aside {
   .laps h3 {
     font-weight: 400;
     font-size: 1.6rem;
+    margin: 0;
     /* border-top: 1px solid var(--c-text);
     padding-top: 1rem; */
   }
@@ -506,7 +528,7 @@ aside {
 
     @media (max-width: 500px) {
       .laps h3 {
-        padding: 1rem;
+        padding: 1rem 1rem 0;
       }
     }
 
@@ -638,6 +660,7 @@ dialog pre {
   color: var(--c-bg);
   white-space: break-spaces;
   width: 100%;
+  overflow: auto;
 }
 
 dialog button.primary {
