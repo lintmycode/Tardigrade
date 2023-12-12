@@ -171,20 +171,25 @@ body > main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-bottom: 20vh;
   gap: 1rem;
   height: 100%;
   flex: 1 1 0;
 
-  background-image: url(https://researchmagazine.colostate.edu/wp-content/uploads/sites/51/2023/04/WaterBear_clipped2-resized-1024x895.png);
-  background-size: contain;
+  background-image: url(img/tardigrade.png);
+  background-size: auto 50%;
   background-repeat: no-repeat;
+  background-position: 50% 20%;
 }
 
   @media (max-width: 900px) {
     body > main {
       flex: 0 0 30vh;
       min-height: 12rem;
+      padding-bottom: 0;
+      justify-content: center;
+      background-image: none;
     }
   }
 
