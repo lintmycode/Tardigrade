@@ -316,7 +316,6 @@ aside {
 
   @media (max-width: 900px) {
     .tasks {
-      /* flex-basis: 50%; */
       flex: 1 1 0;
     }
   }
@@ -347,6 +346,11 @@ aside {
       display: inline-flex;
       align-items: center;
       gap: 1rem;
+      flex: 0 0 auto;
+    }
+
+    .tasks footer li {
+      width: auto;
     }
 
     .tasks footer a {
