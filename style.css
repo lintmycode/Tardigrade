@@ -3,13 +3,10 @@
   --c-bg: #222;
   --c-bg-alt: #333;
   --c-text-active: #fff;
-  --c-bg-active: #007878;
+  /* --c-bg-active: #007878; */
+  --c-bg-active: #1c64af;
   --c-alert: #f15858;
-
-  /* --c-blue: #1E90FF;
-  --c-green: #32CD32;
-  --c-orange: #FFA500;
-  --c-purple: #ff10ff; */
+  --c-tardigrade: #1c64af;
 }
 
 *, *::before, *::after {
@@ -68,8 +65,9 @@ body.running .stopwatch-toggle {
   }
 
     body.running .stopwatch-toggle:hover {
-      color: var(--c-text);
+      color: var(--c-text-active);
       background-color: var(--c-bg);
+      border-color: var(--c-text-active);
     }
 
     body.running .stopwatch-toggle:after {  
@@ -238,10 +236,14 @@ input.lap-title {
   display: flex;
   gap: .8rem;
   align-items: center;
-  background-color: var(--c-bg-active);
+  background-color: var(--c-tardigrade);
   color: var(--c-text-active);
   border-color: var(--c-text-active);
 }
+  .stopwatch-toggle.primary:hover {
+    border-color: var(--c-tardigrade);
+    background-color: var(--c-tardigrade);
+  }
 
   .stopwatch-toggle:after { 
     content: "";

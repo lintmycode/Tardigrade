@@ -127,11 +127,12 @@ const editLapTitle = e => {
 
 // set current lap title
 const setLapTitle = e => {
-  lapTitle = e.target.value
-
   // reset lap edition
   dom.laps.title.input.classList.add("hidden")
   dom.laps.title.label.classList.remove("hidden")
+
+  if (e.target.value.trim().length === 0) return  
+  lapTitle = e.target.value.trim()
   dom.laps.title.label.textContent = lapTitle 
 } 
 
