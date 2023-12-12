@@ -94,6 +94,7 @@ const setCurrentTask = index => {
   dom.laps.title.label.textContent = "what are you doing?"
   dom.laps.title.input.value = ""
 
+  renderTime(time = loadTime())
   renderLaps()
   renderTasks()
 }
@@ -116,6 +117,9 @@ const setTaskTitle = e => {
   dom.tasks.title.label.textContent = tasks[currentTask].name
   dom.tasks.title.input.classList.add("hidden") 
 }
+
+// load last lap time
+const loadTime = () => laps.length > 0 ? laps[0].time : 0
 
 // laps
 // enter edition mode on lap title
@@ -275,8 +279,9 @@ tasks = load()
 laps = tasks[currentTask].laps
 setCurrentTask(0)
 
-//get time from last lap if lap exists
-renderTime(time = laps.length > 0 ? laps[0].time : 0)
+// get time from last lap if lap exists
+// renderTime(time = laps.length > 0 ? laps[0].time : 0)
+renderTime(time = loadTime())
 
 // toggle button label
 dom.stopwatch.toggle.textContent = dom.stopwatch.toggle.dataset.start
