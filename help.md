@@ -1,4 +1,4 @@
-# Help
+# Intro
 A simple stopwatch with task support.
 Tasks group a series of laps and can be resumed when selected.
 
