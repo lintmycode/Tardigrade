@@ -21,3 +21,5 @@ The app uses the browser local storage only, therefore there's no data persisten
 - [t] edit task title
 - [l] edit active lap title
 
+## Feedback
+Email enjoy.rewinds.09@icloud.com
