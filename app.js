@@ -171,7 +171,7 @@ const formatTime = (t, fuzzy = false) => {
 
   if (fuzzy) {
     if (hours > 0) {
-      return `${hours}h${minutes > 0 ? ` ${minutes} m` : ''}`;
+      return `${hours}h${minutes > 0 ? ` ${minutes}m` : ''}`;
     } else if (minutes > 0) {
       return `${minutes}m${seconds > 0 ? ` ${seconds}s` : ''}`;
     } else {
