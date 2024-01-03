@@ -37,7 +37,9 @@ let startTime
 let intervalId
 
 const start = () => {
-  startTime = new Date() -  time * 1000
+  // startTime = new Date() - time * 1000
+  renderTime(time = 0)
+  startTime = new Date()
   return setInterval(() => renderTime(time = Math.floor((new Date() - startTime) / 1000)), 1000)
 }
 
@@ -94,8 +96,8 @@ const setCurrentTask = index => {
   dom.laps.title.label.textContent = "what are you doing?"
   dom.laps.title.input.value = ""
 
-  renderTime(time = loadTime())
-  // renderTime(time = 0)
+  // renderTime(time = loadTime())
+  renderTime(time = 0)
   renderLaps()
   renderTasks()
 }
@@ -214,17 +216,26 @@ const renderTasks = () => {
 // render laps list
 const renderLaps = () => {
   dom.laps.list.innerHTML = 
-    laps.reduce((acc, cur, index) => acc += `<li onclick="showLapDetail(event)">
-      ${formatTime(cur.time)} ${cur.title.trim().length ? '- ' + cur.title : ''}
-      <span>
-        ${index < laps.length - 1? "+" + formatTime(cur.time - laps[index + 1].time, true) : "" }
-        <button class="delete" onclick="deleteLap(${index})" title="Delete"></button>
-      </span>
-    </li>`, "")
+    laps.reduce((acc, cur, index, array) => {
+      // calculate the cumulative sum from all laps til this one
+      let cumulativeSum = 0;
+      for (let i = array.length - 1; i >= index; i--) {
+          cumulativeSum += array[i].time;
+      }
+
+      return acc += `<li onclick="showLapDetail(event)">
+        ${formatTime(cumulativeSum)} ${cur.title.trim().length ? '- ' + cur.title : ''}
+        <span>
+          ${index < laps.length - 1? "+" + formatTime(cur.time, true) : "" }
+          <button class="delete" onclick="deleteLap(${index})" title="Delete"></button>
+        </span>
+      </li>`
+    } , "")
 
   dom.tasks.delete.classList.toggle("hidden", currentTask === 0)
   dom.laps.total.classList.toggle("hidden", laps.length === 0)
-  dom.laps.total.textContent = laps.length > 0 ? `${formatTime(laps[0].time, true)} total` : ``
+  // todo
+  dom.laps.total.textContent = laps.length > 0 ? `${formatTime(laps.reduce((acc, cur) => acc + cur.time, 0), true)} total` : ``
 }
 
 // render clock
