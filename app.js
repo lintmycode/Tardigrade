@@ -95,6 +95,7 @@ const setCurrentTask = index => {
   dom.laps.title.input.value = ""
 
   renderTime(time = loadTime())
+  // renderTime(time = 0)
   renderLaps()
   renderTasks()
 }
@@ -270,9 +271,9 @@ document.addEventListener("keydown", key => {
 const helpDialog = () => {
   dom.help.dialog.showModal()
 }
+
 document.querySelector(".help").addEventListener("click", () => document.querySelector("dialog").showModal())
 dom.help.close.addEventListener("click", () => document.querySelector("dialog").close())
-
 
 // init
 tasks = load()
@@ -280,8 +281,7 @@ laps = tasks[currentTask].laps
 setCurrentTask(0)
 
 // get time from last lap if lap exists
-// renderTime(time = laps.length > 0 ? laps[0].time : 0)
-renderTime(time = loadTime())
+// renderTime(time = loadTime())
 
 // toggle button label
 dom.stopwatch.toggle.textContent = dom.stopwatch.toggle.dataset.start
